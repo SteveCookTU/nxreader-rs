@@ -11,6 +11,7 @@ enum Command {
         #[clap(short, long)]
         max_results: Option<usize>,
     },
+    CheckHorse,
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -45,10 +46,14 @@ fn main() {
                 max_results,
             } => match &args.game {
                 Game::Swsh => {
-                    println!("{}", do_research);
                     swsh::check_den(client, do_research, max_results.unwrap_or_default());
                 }
             },
+            Command::CheckHorse => match &args.game {
+                Game::Swsh => {
+                    swsh::check_horse(client);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 use crate::rng::{Raid, Xoroshiro};
-use crate::structs::swsh::swsh_reader::{read_den, read_my_status_8};
+use crate::structs::swsh::swsh_reader::{read_dens, read_my_status_8};
 use crate::structs::swsh::{DenSpawn, DEN_COUNT};
 use crate::util::SPECIES;
 use std::io::{stdout, Write};
@@ -11,14 +11,10 @@ pub fn check_den(client: SysBotClient, do_research: &bool, max_results: usize) {
     let mut pieced_shiny_lock: Option<u8> = None;
     let my_status_8 = read_my_status_8(&client);
     let is_sword = my_status_8.is_sword();
+    let dens = read_dens(&client);
+    println!();
     for i in 0..DEN_COUNT {
-        let den = if i > 189 {
-            read_den(i + 32, &client)
-        } else if i > 99 {
-            read_den(i + 11, &client)
-        } else {
-            read_den(i, &client)
-        };
+        let den = &dens[i];
         if den.is_active() {
             let spawn = den.get_spawn(i, is_sword);
             let mut curr_shiny_lock = 0;
@@ -78,7 +74,7 @@ pub fn check_den(client: SysBotClient, do_research: &bool, max_results: usize) {
                 spawn.species as u16,
                 spawn.alt_form as u8,
             );
-            print!("{}\n{}\n", info, raid);
+            println!("{}\n{}", info, raid);
             stdout().flush().unwrap();
         }
     }
