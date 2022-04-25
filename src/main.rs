@@ -53,7 +53,7 @@ fn main() {
                 Game::Swsh => {
                     swsh::check_horse(client);
                 }
-            }
+            },
         }
     }
 }

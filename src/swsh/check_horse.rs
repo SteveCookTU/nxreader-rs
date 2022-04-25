@@ -1,7 +1,7 @@
+use crate::structs::swsh::swsh_reader::read_horse;
 use std::io;
 use std::io::{stdout, Write};
 use sysbot_rs::SysBotClient;
-use crate::structs::swsh::swsh_reader::read_horse;
 
 pub fn check_horse(client: SysBotClient) {
     loop {

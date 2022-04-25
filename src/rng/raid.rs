@@ -17,6 +17,7 @@ pub struct Raid {
 }
 
 impl Raid {
+    #[allow(clippy::too_many_arguments)]
     pub fn new(
         seed: u64,
         tid: u16,

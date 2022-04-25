@@ -83,6 +83,8 @@ pub mod structure {
             Ok(())
         }
     }
+
+    #[derive(Default)]
     pub struct NestHoleDistributionEncounter8ArchiveArgs<'a> {
         pub tables: Option<
             flatbuffers::WIPOffset<
@@ -92,12 +94,6 @@ pub mod structure {
                 >,
             >,
         >,
-    }
-    impl<'a> Default for NestHoleDistributionEncounter8ArchiveArgs<'a> {
-        #[inline]
-        fn default() -> Self {
-            NestHoleDistributionEncounter8ArchiveArgs { tables: None }
-        }
     }
 
     pub struct NestHoleDistributionEncounter8ArchiveBuilder<'a: 'b, 'b> {
@@ -255,6 +251,8 @@ pub mod structure {
             Ok(())
         }
     }
+
+    #[derive(Default)]
     pub struct NestHoleDistributionEncounter8TableArgs<'a> {
         pub table_id: u64,
         pub game_version: u32,
@@ -268,18 +266,6 @@ pub mod structure {
                 >,
             >,
         >,
-    }
-    impl<'a> Default for NestHoleDistributionEncounter8TableArgs<'a> {
-        #[inline]
-        fn default() -> Self {
-            NestHoleDistributionEncounter8TableArgs {
-                table_id: 0,
-                game_version: 0,
-                field_02: 0,
-                field_03: 0,
-                entries: None,
-            }
-        }
     }
 
     pub struct NestHoleDistributionEncounter8TableBuilder<'a: 'b, 'b> {

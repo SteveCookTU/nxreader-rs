@@ -73,18 +73,13 @@ pub mod structure {
             Ok(())
         }
     }
+    #[derive(Default)]
     pub struct EncounterNest8ArchiveArgs<'a> {
         pub tables: Option<
             flatbuffers::WIPOffset<
                 flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EncounterNest8Table<'a>>>,
             >,
         >,
-    }
-    impl<'a> Default for EncounterNest8ArchiveArgs<'a> {
-        #[inline]
-        fn default() -> Self {
-            EncounterNest8ArchiveArgs { tables: None }
-        }
     }
 
     pub struct EncounterNest8ArchiveBuilder<'a: 'b, 'b> {
@@ -208,6 +203,7 @@ pub mod structure {
             Ok(())
         }
     }
+    #[derive(Default)]
     pub struct EncounterNest8TableArgs<'a> {
         pub table_id: u64,
         pub game_version: u32,
@@ -216,16 +212,6 @@ pub mod structure {
                 flatbuffers::Vector<'a, flatbuffers::ForwardsUOffset<EncounterNest8<'a>>>,
             >,
         >,
-    }
-    impl<'a> Default for EncounterNest8TableArgs<'a> {
-        #[inline]
-        fn default() -> Self {
-            EncounterNest8TableArgs {
-                table_id: 0,
-                game_version: 0,
-                entries: None,
-            }
-        }
     }
 
     pub struct EncounterNest8TableBuilder<'a: 'b, 'b> {
@@ -434,6 +420,8 @@ pub mod structure {
             Ok(())
         }
     }
+
+    #[derive(Default)]
     pub struct EncounterNest8Args<'a> {
         pub entry_index: u32,
         pub species: u32,
@@ -446,24 +434,6 @@ pub mod structure {
         pub probabilities: Option<flatbuffers::WIPOffset<flatbuffers::Vector<'a, u32>>>,
         pub gender: i8,
         pub flawless_ivs: i8,
-    }
-    impl<'a> Default for EncounterNest8Args<'a> {
-        #[inline]
-        fn default() -> Self {
-            EncounterNest8Args {
-                entry_index: 0,
-                species: 0,
-                alt_form: 0,
-                level_table_id: 0,
-                ability: 0,
-                is_gigantamax: false,
-                drop_table_id: 0,
-                bonus_table_id: 0,
-                probabilities: None,
-                gender: 0,
-                flawless_ivs: 0,
-            }
-        }
     }
 
     pub struct EncounterNest8Builder<'a: 'b, 'b> {

@@ -1,6 +1,6 @@
 use crate::rng::{Raid, Xoroshiro};
 use crate::structs::swsh::swsh_reader::{read_dens, read_my_status_8};
-use crate::structs::swsh::{DenSpawn, DEN_COUNT};
+use crate::structs::swsh::DenSpawn;
 use crate::util::SPECIES;
 use std::io::{stdout, Write};
 use sysbot_rs::SysBotClient;
@@ -13,8 +13,7 @@ pub fn check_den(client: SysBotClient, do_research: &bool, max_results: usize) {
     let is_sword = my_status_8.is_sword();
     let dens = read_dens(&client);
     println!();
-    for i in 0..DEN_COUNT {
-        let den = &dens[i];
+    for (i, den) in dens.iter().enumerate() {
         if den.is_active() {
             let spawn = den.get_spawn(i, is_sword);
             let mut curr_shiny_lock = 0;
@@ -78,26 +77,27 @@ pub fn check_den(client: SysBotClient, do_research: &bool, max_results: usize) {
             stdout().flush().unwrap();
         }
     }
-
-    if *do_research && seed.is_some() {
-        println!("Wishing Piece Den Predicition:");
-        let mut seed = seed.unwrap();
-        let mut i = 0;
-        while i < max_results {
-            let raid = Raid::new(
-                seed,
-                my_status_8.tid(),
-                my_status_8.sid(),
-                pieced_spawn.as_ref().unwrap().flawless_ivs as u8,
-                *pieced_shiny_lock.as_ref().unwrap(),
-                pieced_spawn.as_ref().unwrap().ability as u8,
-                pieced_spawn.as_ref().unwrap().gender as u8,
-                pieced_spawn.as_ref().unwrap().species as u16,
-                pieced_spawn.as_ref().unwrap().alt_form as u8,
-            );
-            seed = Xoroshiro::new(seed).next_u64();
-            println!("Frame: {i}\n{}", raid);
-            i += 1;
+    if let Some(seed) = seed {
+        if *do_research {
+            println!("Wishing Piece Den Predicition:");
+            let mut seed = seed;
+            let mut i = 0;
+            while i < max_results {
+                let raid = Raid::new(
+                    seed,
+                    my_status_8.tid(),
+                    my_status_8.sid(),
+                    pieced_spawn.as_ref().unwrap().flawless_ivs as u8,
+                    *pieced_shiny_lock.as_ref().unwrap(),
+                    pieced_spawn.as_ref().unwrap().ability as u8,
+                    pieced_spawn.as_ref().unwrap().gender as u8,
+                    pieced_spawn.as_ref().unwrap().species as u16,
+                    pieced_spawn.as_ref().unwrap().alt_form as u8,
+                );
+                seed = Xoroshiro::new(seed).next_u64();
+                println!("Frame: {i}\n{}", raid);
+                i += 1;
+            }
         }
     }
 }

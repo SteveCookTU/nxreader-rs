@@ -13,8 +13,8 @@ impl Xoroshiro {
     }
 
     pub fn new_bdsp(seed: u64) -> Self {
-        let mut s0 = u64::from(seed).wrapping_sub(0x61C8864680B583EB);
-        let mut s1 = u64::from(seed).wrapping_add(0x3C6EF372FE94F82A);
+        let mut s0 = seed.wrapping_sub(0x61C8864680B583EB);
+        let mut s1 = seed.wrapping_add(0x3C6EF372FE94F82A);
 
         s0 = (s0 ^ (s0 >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
         s1 = (s1 ^ (s1 >> 30)).wrapping_mul(0xBF58476D1CE4E5B9);
