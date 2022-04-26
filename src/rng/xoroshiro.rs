@@ -1,4 +1,4 @@
-#[derive(Clone, Copy, PartialEq, Debug)]
+#[derive(Clone, Copy, PartialEq, Debug, Default)]
 pub struct Xoroshiro {
     s0: u64,
     s1: u64,

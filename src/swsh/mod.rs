@@ -9,6 +9,7 @@ mod check_wild;
 mod dump_html_table;
 mod dump_wild_area_event;
 mod dumper;
+mod ow_rng;
 
 pub use check_box::*;
 pub use check_den::*;
@@ -21,3 +22,4 @@ pub use check_wild::*;
 pub use dump_html_table::*;
 pub use dump_wild_area_event::*;
 pub use dumper::*;
+pub use ow_rng::*;

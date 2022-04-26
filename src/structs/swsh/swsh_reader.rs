@@ -250,3 +250,17 @@ pub fn read_event_block_raid_encounter_ct(client: &SysBotClient, dump: bool) -> 
     }
     data
 }
+
+pub fn read_rng(client: &SysBotClient) -> (u64, u64) {
+    let full_seed = client
+        .peek(PeekArgs {
+            addr: 0x4C2AAC18,
+            size: 16,
+        })
+        .unwrap();
+
+    (
+        u64::from_le_bytes((&full_seed[..8]).try_into().unwrap()),
+        u64::from_le_bytes((&full_seed[8..16]).try_into().unwrap()),
+    )
+}

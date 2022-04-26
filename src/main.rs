@@ -1,3 +1,4 @@
+use crate::Game::Swsh;
 use clap::{ArgEnum, Parser, Subcommand};
 use nxreader::swsh;
 use sysbot_rs::SysBotClient;
@@ -32,6 +33,7 @@ enum Command {
         #[clap(short, long)]
         island: Option<u8>,
     },
+    OwRng,
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -57,41 +59,41 @@ fn main() {
     if let Ok(client) = SysBotClient::connect(&args.addr, args.port) {
         match &args.command {
             Command::CheckBox => match &args.game {
-                Game::Swsh => swsh::check_box(client),
+                Swsh => swsh::check_box(client),
             },
             Command::CheckDen {
                 do_research,
                 max_results,
             } => match &args.game {
-                Game::Swsh => swsh::check_den(client, do_research, max_results.unwrap_or_default()),
+                Swsh => swsh::check_den(client, do_research, max_results.unwrap_or_default()),
             },
             Command::CheckHorse => match &args.game {
-                Game::Swsh => swsh::check_horse(client),
+                Swsh => swsh::check_horse(client),
             },
             Command::CheckLegend => match &args.game {
-                Game::Swsh => swsh::check_legend(client),
+                Swsh => swsh::check_legend(client),
             },
             Command::CheckOverworldPokemon => match &args.game {
-                Game::Swsh => swsh::check_overworld_pokemon(client),
+                Swsh => swsh::check_overworld_pokemon(client),
             },
             Command::CheckParty => match &args.game {
-                Game::Swsh => swsh::check_party(client),
+                Swsh => swsh::check_party(client),
             },
             Command::CheckSave => match &args.game {
-                Game::Swsh => swsh::check_save(client),
+                Swsh => swsh::check_save(client),
             },
             Command::CheckWild => match &args.game {
-                Game::Swsh => swsh::check_wild(client),
+                Swsh => swsh::check_wild(client),
             },
             Command::Dumper => match &args.game {
-                Game::Swsh => swsh::dumper(client),
+                Swsh => swsh::dumper(client),
             },
             Command::DumpHtmlTable {
                 large_images,
                 island,
                 dump,
             } => match &args.game {
-                Game::Swsh => swsh::dump_html_table(
+                Swsh => swsh::dump_html_table(
                     client,
                     *large_images,
                     if let Some(island) = island {
@@ -103,7 +105,7 @@ fn main() {
                 ),
             },
             Command::DumpWildAreaEvent { dump, island } => match &args.game {
-                Game::Swsh => swsh::dump_wild_area_event(
+                Swsh => swsh::dump_wild_area_event(
                     client,
                     if let Some(island) = island {
                         *island
@@ -112,6 +114,9 @@ fn main() {
                     },
                     *dump,
                 ),
+            },
+            Command::OwRng => match &args.game {
+                Swsh => swsh::ow_rng(client),
             },
         }
     }

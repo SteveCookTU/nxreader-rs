@@ -406,7 +406,7 @@ impl Den {
 
         if self.is_event() {
             let mut event_table_file =
-                File::open("nests_event").expect("Failed to open nests_event file");
+                File::open("normal_encount").expect("Failed to open normal_encount file");
             let mut event_table_raw = Vec::new();
             event_table_file
                 .read_to_end(&mut event_table_raw)
