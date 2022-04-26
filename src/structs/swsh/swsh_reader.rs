@@ -1,5 +1,8 @@
 use crate::structs::pk8::{PARTY_SIZE, PK8, STORED_SIZE};
 use crate::structs::swsh::{Den, KCoordinates, MyStatus8, StorageBox, DEN_COUNT, DEN_SIZE};
+use crate::structs::SystemLanguage;
+use std::fs::OpenOptions;
+use std::io::Write;
 use sysbot_rs::types::PeekArgs;
 use sysbot_rs::SysBotClient;
 
@@ -54,7 +57,15 @@ pub fn read_my_status_8(client: &SysBotClient) -> MyStatus8 {
             size: 0x110,
         })
         .unwrap();
-    data.extend(client.peek(PeekArgs { addr: 0, size: 0 }).unwrap());
+    data.pop().unwrap();
+    data.append(
+        &mut client
+            .peek(PeekArgs {
+                addr: 0x45072DF4,
+                size: 0x3,
+            })
+            .unwrap(),
+    );
     data.into()
 }
 
@@ -99,4 +110,125 @@ pub fn read_party(client: &SysBotClient) -> Vec<PK8> {
     data.chunks_exact(PARTY_SIZE)
         .map(|chunk| PK8::from(chunk.to_vec()))
         .collect::<Vec<PK8>>()
+}
+
+pub fn read_wild(client: &SysBotClient) -> PK8 {
+    client
+        .peek(PeekArgs {
+            addr: 0x8FEA3648,
+            size: STORED_SIZE,
+        })
+        .unwrap()
+        .into()
+}
+
+pub fn get_event_offset(client: &SysBotClient) -> i16 {
+    let system_lang: SystemLanguage = client.get_system_language().unwrap().into();
+    match system_lang {
+        SystemLanguage::Zhcn | SystemLanguage::Zhhans => -0xE00,
+        SystemLanguage::Zhtw | SystemLanguage::Zhhant => -0xE60,
+        SystemLanguage::Ko => -0xA00,
+        SystemLanguage::It => -0x80,
+        SystemLanguage::Ja => 0x160,
+        SystemLanguage::Fr | SystemLanguage::Frca => 0x1F0,
+        SystemLanguage::Es | SystemLanguage::Es419 => 0x1C0,
+        SystemLanguage::De => 0x2D0,
+        _ => 0,
+    }
+}
+
+pub fn dump_event_block_bonus_rewards(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2FA03F78u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x116C4,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("bonus_rewards")
+        .unwrap();
+    file.write_all(&data).unwrap();
+}
+
+pub fn dump_event_block_crystal_encounter(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2F9ED788u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x1241C,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("dai_encount")
+        .unwrap();
+    file.write_all(&data).unwrap();
+}
+
+pub fn dump_event_block_drop_rewards(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2F9FFC58u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x426C,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("drop_rewards")
+        .unwrap();
+    file.write_all(&data).unwrap();
+}
+
+pub fn dump_event_block_raid_encounter(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2F9EB300u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x23D4,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("normal_encount")
+        .unwrap();
+    file.write_all(&data).unwrap();
+}
+
+pub fn dump_event_block_raid_encounter_ioa(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2FA156F0u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x23D4,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("normal_encount_rigel1")
+        .unwrap();
+    file.write_all(&data).unwrap();
+}
+
+pub fn dump_event_block_raid_encounter_ct(client: &SysBotClient) {
+    let mut data = client
+        .peek(PeekArgs {
+            addr: 0x2FA17B78u64.wrapping_add(get_event_offset(client) as u64),
+            size: 0x23D4,
+        })
+        .unwrap();
+    data.pop();
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .open("normal_encount_rigel2")
+        .unwrap();
+    file.write_all(&data).unwrap();
 }

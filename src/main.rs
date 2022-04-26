@@ -15,6 +15,9 @@ enum Command {
     CheckLegend,
     CheckOverworldPokemon,
     CheckParty,
+    CheckSave,
+    CheckWild,
+    Dumper,
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -59,6 +62,15 @@ fn main() {
             },
             Command::CheckParty => match &args.game {
                 Game::Swsh => swsh::check_party(client),
+            },
+            Command::CheckSave => match &args.game {
+                Game::Swsh => swsh::check_save(client),
+            },
+            Command::CheckWild => match &args.game {
+                Game::Swsh => swsh::check_wild(client),
+            },
+            Command::Dumper => match &args.game {
+                Game::Swsh => swsh::dumper(client),
             },
         }
     }

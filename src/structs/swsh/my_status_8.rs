@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+use std::fmt::{Display, Formatter};
 
 #[derive(Default)]
 pub struct MyStatus8 {
@@ -99,5 +100,20 @@ impl MyStatus8 {
 impl From<Vec<u8>> for MyStatus8 {
     fn from(data: Vec<u8>) -> Self {
         Self { data }
+    }
+}
+
+impl Display for MyStatus8 {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "TID: {}\nSID: {}\nTSV: {}\nLanguage: {}\nMoney: ${}\nWatts: {}",
+            self.tid(),
+            self.sid(),
+            self.tsv(),
+            self.get_lang_name(),
+            self.money(),
+            self.watts()
+        )
     }
 }
