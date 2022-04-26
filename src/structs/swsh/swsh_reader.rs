@@ -1,24 +1,20 @@
-use crate::structs::pk8;
-use crate::structs::pk8::PK8;
+use crate::structs::pk8::{PARTY_SIZE, PK8, STORED_SIZE};
 use crate::structs::swsh::{Den, KCoordinates, MyStatus8, StorageBox, DEN_COUNT, DEN_SIZE};
 use sysbot_rs::types::PeekArgs;
 use sysbot_rs::SysBotClient;
-
-const PK8_STORED_SIZE: usize = 0x148;
-const PK8_PARTY_SIZE: usize = 0x158;
 
 pub fn read_box(mut r#box: usize, client: &SysBotClient) -> StorageBox {
     if r#box > 32 {
         r#box = 32;
     }
 
-    let address = 0x45075880 + ((r#box - 1) * 30 * PK8_PARTY_SIZE);
+    let address = 0x45075880 + ((r#box - 1) * 30 * PARTY_SIZE);
     StorageBox::new(
         r#box,
         client
             .peek(PeekArgs {
                 addr: address as u64,
-                size: PK8_PARTY_SIZE * 30,
+                size: PARTY_SIZE * 30,
             })
             .unwrap(),
     )
@@ -66,7 +62,7 @@ pub fn read_horse(client: &SysBotClient) -> PK8 {
     client
         .peek(PeekArgs {
             addr: 0x450CAE28,
-            size: pk8::STORED_SIZE,
+            size: STORED_SIZE,
         })
         .unwrap()
         .into()
@@ -76,7 +72,7 @@ pub fn read_legend(client: &SysBotClient) -> PK8 {
     client
         .peek(PeekArgs {
             addr: 0x886BC348,
-            size: pk8::STORED_SIZE,
+            size: STORED_SIZE,
         })
         .unwrap()
         .into()
@@ -90,4 +86,13 @@ pub fn read_k_coordinates_block(client: &SysBotClient) -> KCoordinates {
         })
         .unwrap()
         .into()
+}
+
+pub fn read_party(client: &SysBotClient) -> Vec<PK8> {
+    let data = client.peek(PeekArgs {
+        addr: 0x450C68B0,
+        size: 6 * PARTY_SIZE
+    }).unwrap();
+
+    data.chunks_exact(PARTY_SIZE).map(|chunk| PK8::from(chunk.to_vec())).collect::<Vec<PK8>>()
 }

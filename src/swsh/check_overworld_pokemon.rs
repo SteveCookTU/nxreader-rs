@@ -1,5 +1,5 @@
-use std::io::{stdout, Write};
 use crate::structs::swsh::swsh_reader::{read_k_coordinates_block, read_my_status_8};
+use std::io::{stdout, Write};
 use std::thread;
 use std::time::Duration;
 use sysbot_rs::SysBotClient;

@@ -14,6 +14,7 @@ enum Command {
     CheckHorse,
     CheckLegend,
     CheckOverworldPokemon,
+    CheckParty,
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -39,30 +40,25 @@ fn main() {
     if let Ok(client) = SysBotClient::connect(&args.addr, args.port) {
         match &args.command {
             Command::CheckBox => match &args.game {
-                Game::Swsh => {
-                    swsh::check_box(client);
-                }
+                Game::Swsh => swsh::check_box(client),
             },
             Command::CheckDen {
                 do_research,
                 max_results,
             } => match &args.game {
-                Game::Swsh => {
-                    swsh::check_den(client, do_research, max_results.unwrap_or_default());
-                }
+                Game::Swsh => swsh::check_den(client, do_research, max_results.unwrap_or_default()),
             },
             Command::CheckHorse => match &args.game {
-                Game::Swsh => {
-                    swsh::check_horse(client);
-                }
+                Game::Swsh => swsh::check_horse(client),
             },
             Command::CheckLegend => match &args.game {
-                Game::Swsh => {
-                    swsh::check_legend(client);
-                }
+                Game::Swsh => swsh::check_legend(client),
             },
             Command::CheckOverworldPokemon => match &args.game {
                 Game::Swsh => swsh::check_overworld_pokemon(client),
+            },
+            Command::CheckParty => match &args.game {
+                Game::Swsh => swsh::check_party(client),
             },
         }
     }
