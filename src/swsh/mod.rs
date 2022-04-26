@@ -7,6 +7,7 @@ mod check_party;
 mod check_save;
 mod check_wild;
 mod dump_html_table;
+mod dump_wild_area_event;
 mod dumper;
 
 pub use check_box::*;
@@ -18,4 +19,5 @@ pub use check_party::*;
 pub use check_save::*;
 pub use check_wild::*;
 pub use dump_html_table::*;
+pub use dump_wild_area_event::*;
 pub use dumper::*;

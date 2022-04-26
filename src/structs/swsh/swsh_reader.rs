@@ -137,7 +137,7 @@ pub fn get_event_offset(client: &SysBotClient) -> i16 {
     }
 }
 
-pub fn dump_event_block_bonus_rewards(client: &SysBotClient) {
+pub fn read_event_block_bonus_rewards(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2FA03F78u64.wrapping_add(get_event_offset(client) as u64),
@@ -145,15 +145,18 @@ pub fn dump_event_block_bonus_rewards(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("bonus_rewards")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("bonus_rewards")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }
 
-pub fn dump_event_block_crystal_encounter(client: &SysBotClient) {
+pub fn read_event_block_crystal_encounter(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2F9ED788u64.wrapping_add(get_event_offset(client) as u64),
@@ -161,15 +164,18 @@ pub fn dump_event_block_crystal_encounter(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("dai_encount")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("dai_encount")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }
 
-pub fn dump_event_block_drop_rewards(client: &SysBotClient) {
+pub fn read_event_block_drop_rewards(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2F9FFC58u64.wrapping_add(get_event_offset(client) as u64),
@@ -177,15 +183,18 @@ pub fn dump_event_block_drop_rewards(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("drop_rewards")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("drop_rewards")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }
 
-pub fn dump_event_block_raid_encounter(client: &SysBotClient) {
+pub fn read_event_block_raid_encounter(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2F9EB300u64.wrapping_add(get_event_offset(client) as u64),
@@ -193,15 +202,18 @@ pub fn dump_event_block_raid_encounter(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("normal_encount")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("normal_encount")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }
 
-pub fn dump_event_block_raid_encounter_ioa(client: &SysBotClient) {
+pub fn read_event_block_raid_encounter_ioa(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2FA156F0u64.wrapping_add(get_event_offset(client) as u64),
@@ -209,15 +221,18 @@ pub fn dump_event_block_raid_encounter_ioa(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("normal_encount_rigel1")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("normal_encount_rigel1")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }
 
-pub fn dump_event_block_raid_encounter_ct(client: &SysBotClient) {
+pub fn read_event_block_raid_encounter_ct(client: &SysBotClient, dump: bool) -> Vec<u8> {
     let mut data = client
         .peek(PeekArgs {
             addr: 0x2FA17B78u64.wrapping_add(get_event_offset(client) as u64),
@@ -225,10 +240,13 @@ pub fn dump_event_block_raid_encounter_ct(client: &SysBotClient) {
         })
         .unwrap();
     data.pop();
-    let mut file = OpenOptions::new()
-        .write(true)
-        .create(true)
-        .open("normal_encount_rigel2")
-        .unwrap();
-    file.write_all(&data).unwrap();
+    if dump {
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create(true)
+            .open("normal_encount_rigel2")
+            .unwrap();
+        file.write_all(&data).unwrap();
+    }
+    data
 }

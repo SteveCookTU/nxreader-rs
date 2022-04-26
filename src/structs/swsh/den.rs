@@ -1,6 +1,7 @@
 use crate::structs::swsh::encounter_nest_8_archive_generated::structure::{
     EncounterNest8, EncounterNest8Archive,
 };
+use crate::structs::swsh::nest_hole_crystal_encounter_8_archive_generated::structure::NestHoleCrystalEncounter8;
 use crate::structs::swsh::nest_hole_distribution_encounter_8_archive_generated::structure::{
     root_as_nest_hole_distribution_encounter_8archive, NestHoleDistributionEncounter8,
 };
@@ -546,6 +547,40 @@ impl<'a> From<NestHoleDistributionEncounter8<'a>> for DenSpawn {
             level: Some(entry.level()),
             dynamax_level: Some(entry.dynamax_level()),
             shiny_flag: Some(entry.shiny_flag()),
+            nature: Some(entry.nature()),
+            move0: Some(entry.move0()),
+            move1: Some(entry.move1()),
+            move2: Some(entry.move2()),
+            move3: Some(entry.move3()),
+            dynamax_boost: Some(entry.dynamax_boost()),
+            shield: Some(entry.shield()),
+            additional_move1_rate: Some(entry.additional_move1_rate()),
+            additional_move1: Some(entry.additional_move1()),
+            additional_move1_pp: Some(entry.additional_move1_pp()),
+            additional_move2_rate: Some(entry.additional_move2_rate()),
+            additional_move2: Some(entry.additional_move2()),
+            additional_move2_pp: Some(entry.additional_move2_pp()),
+        }
+    }
+}
+
+impl<'a> From<NestHoleCrystalEncounter8<'a>> for DenSpawn {
+    fn from(entry: NestHoleCrystalEncounter8<'a>) -> Self {
+        Self {
+            entry_index: entry.entry_index(),
+            species: entry.species(),
+            alt_form: entry.alt_form(),
+            level_table_id: None,
+            ability: entry.ability(),
+            is_gigantamax: entry.is_gigantamax() != 0,
+            drop_table_id: entry.drop_table_id(),
+            bonus_table_id: entry.bonus_table_id(),
+            probabilities: vec![],
+            gender: 0,
+            flawless_ivs: 0,
+            level: Some(entry.level()),
+            dynamax_level: Some(entry.dynamax_level() as u16),
+            shiny_flag: None,
             nature: Some(entry.nature()),
             move0: Some(entry.move0()),
             move1: Some(entry.move1()),

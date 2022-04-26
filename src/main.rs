@@ -24,6 +24,12 @@ enum Command {
         #[clap(short, long)]
         island: Option<u8>,
     },
+    DumpWildAreaEvent {
+        #[clap(long)]
+        dump: bool,
+        #[clap(short, long)]
+        island: Option<u8>,
+    },
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -89,6 +95,17 @@ fn main() {
                     } else {
                         0
                     },
+                ),
+            },
+            Command::DumpWildAreaEvent { dump, island } => match &args.game {
+                Game::Swsh => swsh::dump_wild_area_event(
+                    client,
+                    if let Some(island) = island {
+                        *island
+                    } else {
+                        0
+                    },
+                    *dump,
                 ),
             },
         }

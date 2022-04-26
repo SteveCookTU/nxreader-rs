@@ -1,22 +1,22 @@
 use crate::structs::swsh::swsh_reader::{
-    dump_event_block_bonus_rewards, dump_event_block_crystal_encounter,
-    dump_event_block_drop_rewards, dump_event_block_raid_encounter,
-    dump_event_block_raid_encounter_ct, dump_event_block_raid_encounter_ioa,
+    read_event_block_bonus_rewards, read_event_block_crystal_encounter,
+    read_event_block_drop_rewards, read_event_block_raid_encounter,
+    read_event_block_raid_encounter_ct, read_event_block_raid_encounter_ioa,
 };
 use sysbot_rs::SysBotClient;
 
 pub fn dumper(client: SysBotClient) {
     println!("Dumping bonus_rewards...");
-    dump_event_block_bonus_rewards(&client);
+    let _ = read_event_block_bonus_rewards(&client, true);
     println!("Dumping dai_encount...");
-    dump_event_block_crystal_encounter(&client);
+    let _ = read_event_block_crystal_encounter(&client, true);
     println!("Dumping drop_rewards...");
-    dump_event_block_drop_rewards(&client);
+    let _ = read_event_block_drop_rewards(&client, true);
     println!("Dumping normal_encount...");
-    dump_event_block_raid_encounter(&client);
+    let _ = read_event_block_raid_encounter(&client, true);
     println!("Dumping normal_encount_rigel1...");
-    dump_event_block_raid_encounter_ioa(&client);
+    let _ = read_event_block_raid_encounter_ioa(&client, true);
     println!("Dumping normal_encount_rigel2...");
-    dump_event_block_raid_encounter_ct(&client);
+    let _ = read_event_block_raid_encounter_ct(&client, true);
     println!("\nDump Completed!\n");
 }

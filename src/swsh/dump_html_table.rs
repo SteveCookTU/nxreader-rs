@@ -238,7 +238,7 @@ fn get_pm_name(species: u16, form: u8, can_gmax: bool, is_shiny: bool) -> String
         let form_text = FORMS[PERSONAL_TABLE
             .get_form_name_index(species as usize, form as usize)
             .unwrap()]
-            .trim();
+        .trim();
         t = format!("{}<br><small>{}</small>", t, form_text);
     }
     if can_gmax {
@@ -261,7 +261,11 @@ fn get_item_image(item_id: u16) -> String {
 }
 
 fn get_item_name(item_id: u16) -> String {
-    let txt = format!("{}{}", get_item_image(item_id), ITEMS[item_id as usize].trim());
+    let txt = format!(
+        "{}{}",
+        get_item_image(item_id),
+        ITEMS[item_id as usize].trim()
+    );
     if (1130..=1229).contains(&item_id) {
         let tr = item_id - 1130;
         format!("{} ({})", txt, TR_MOVES[tr as usize].trim())
@@ -297,7 +301,6 @@ fn get_msg_1(spawn: &DenSpawn, rank: u8, use_large_image: bool) -> String {
             "".to_string()
         )
     )
-
 }
 
 fn get_msg_2(
@@ -495,13 +498,20 @@ fn get_msg_2(
         comment = format!("{}Cannot be shiny<br>", comment);
     }
 
-    txt = format!("{}{}", txt, td({
-        if comment.is_empty() {
-            "-".to_string()
-        } else {
-            comment[..(comment.len() - 4)].to_string()
-        }
-    },"".to_string()));
+    txt = format!(
+        "{}{}",
+        txt,
+        td(
+            {
+                if comment.is_empty() {
+                    "-".to_string()
+                } else {
+                    comment[..(comment.len() - 4)].to_string()
+                }
+            },
+            "".to_string()
+        )
+    );
 
     txt
 }
