@@ -2,41 +2,31 @@ use crate::structs::swsh::nest_hole_distribution_encounter_8_archive_generated::
 use crate::structs::swsh::nest_hole_distribution_reward_8_archive_generated::structure::{
     root_as_nest_hole_distribution_reward_8archive, NestHoleDistributionReward8Archive,
 };
+use crate::structs::swsh::swsh_reader::{
+    read_event_block_bonus_rewards, read_event_block_drop_rewards, read_event_block_raid_encounter,
+    read_event_block_raid_encounter_ct, read_event_block_raid_encounter_ioa,
+};
 use crate::structs::swsh::{DenSpawn, ALOLA_LIST, GALAR_LIST, LOCAL_BONUS, LOCAL_DROPS};
 use crate::util::{ABILITIES, FORMS, ITEMS, MOVES, NATURES, PERSONAL_TABLE, SPECIES, TR_MOVES};
-use std::fs::{File, OpenOptions};
-use std::io::{Read, Write};
+use std::fs::OpenOptions;
+use std::io::Write;
+use sysbot_rs::SysBotClient;
 
-pub fn dump_html_table(use_large_image: bool, island: u8) {
-    let file = if island == 0 {
-        "normal_encount".to_string()
-    } else {
-        format!("normal_encount_rigel{island}")
+pub fn dump_html_table(client: SysBotClient, use_large_image: bool, island: u8, dump: bool) {
+    let encounter_data = match island {
+        0 => read_event_block_raid_encounter(&client, dump),
+        1 => read_event_block_raid_encounter_ioa(&client, dump),
+        _ => read_event_block_raid_encounter_ct(&client, dump),
     };
-    let mut event_table_file = File::open(file).expect("Failed to open file");
-    let mut event_table_raw = Vec::new();
-    event_table_file
-        .read_to_end(&mut event_table_raw)
-        .expect("Failed to read bytes from file");
+
     let event_encounters =
-        root_as_nest_hole_distribution_encounter_8archive(&event_table_raw[32..])
-            .expect("Invalid flatbuffer");
+        root_as_nest_hole_distribution_encounter_8archive(&encounter_data[32..]).unwrap();
 
-    let mut event_drops_file = File::open("drop_rewards").expect("Failed to open file");
-    let mut event_drops_raw = Vec::new();
-    event_drops_file
-        .read_to_end(&mut event_drops_raw)
-        .expect("Failed to read bytes from file");
-    let drop_rewards = root_as_nest_hole_distribution_reward_8archive(&event_drops_raw[32..])
-        .expect("Invalid flatbuffer");
+    let drops_data = read_event_block_drop_rewards(&client, dump);
+    let drop_rewards = root_as_nest_hole_distribution_reward_8archive(&drops_data[32..]).unwrap();
 
-    let mut event_bonus_file = File::open("bonus_rewards").expect("Failed to open file");
-    let mut event_bonus_raw = Vec::new();
-    event_bonus_file
-        .read_to_end(&mut event_bonus_raw)
-        .expect("Failed to read bytes from file");
-    let bonus_rewards = root_as_nest_hole_distribution_reward_8archive(&event_bonus_raw[32..])
-        .expect("Invalid flatbuffer");
+    let bonus_data = read_event_block_bonus_rewards(&client, dump);
+    let bonus_rewards = root_as_nest_hole_distribution_reward_8archive(&bonus_data[32..]).unwrap();
 
     if event_encounters.tables().unwrap().len() != 2
         || event_encounters

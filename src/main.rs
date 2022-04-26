@@ -23,6 +23,8 @@ enum Command {
         large_images: bool,
         #[clap(short, long)]
         island: Option<u8>,
+        #[clap(long)]
+        dump: bool,
     },
     DumpWildAreaEvent {
         #[clap(long)]
@@ -87,14 +89,17 @@ fn main() {
             Command::DumpHtmlTable {
                 large_images,
                 island,
+                dump,
             } => match &args.game {
                 Game::Swsh => swsh::dump_html_table(
+                    client,
                     *large_images,
                     if let Some(island) = island {
                         *island
                     } else {
                         0
                     },
+                    *dump,
                 ),
             },
             Command::DumpWildAreaEvent { dump, island } => match &args.game {
