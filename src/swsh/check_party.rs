@@ -1,14 +1,16 @@
 use crate::structs::swsh::swsh_reader::read_party;
+use std::io::{stdout, Write};
 use sysbot_rs::SysBotClient;
 
 pub fn check_party(client: SysBotClient) {
     let pkms = read_party(&client);
     for (i, pkm) in pkms.iter().enumerate() {
-        println!("Slot: {}", i + 1);
+        print!("Slot: {}\n", i + 1);
         if pkm.is_valid() && pkm.ec() != 0 {
-            println!("{}", pkm);
+            print!("{}\n", pkm);
         } else {
-            println!("Empty\n");
+            print!("Empty\n\n");
         }
     }
+    stdout().flush().unwrap();
 }
