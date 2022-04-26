@@ -12,6 +12,8 @@ enum Command {
         max_results: Option<usize>,
     },
     CheckHorse,
+    CheckLegend,
+    CheckOverworldPokemon,
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -53,6 +55,14 @@ fn main() {
                 Game::Swsh => {
                     swsh::check_horse(client);
                 }
+            },
+            Command::CheckLegend => match &args.game {
+                Game::Swsh => {
+                    swsh::check_legend(client);
+                }
+            },
+            Command::CheckOverworldPokemon => match &args.game {
+                Game::Swsh => swsh::check_overworld_pokemon(client),
             },
         }
     }

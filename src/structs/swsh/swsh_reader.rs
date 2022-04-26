@@ -1,6 +1,6 @@
 use crate::structs::pk8;
 use crate::structs::pk8::PK8;
-use crate::structs::swsh::{Den, MyStatus8, StorageBox, DEN_COUNT, DEN_SIZE};
+use crate::structs::swsh::{Den, KCoordinates, MyStatus8, StorageBox, DEN_COUNT, DEN_SIZE};
 use sysbot_rs::types::PeekArgs;
 use sysbot_rs::SysBotClient;
 
@@ -59,7 +59,7 @@ pub fn read_my_status_8(client: &SysBotClient) -> MyStatus8 {
         })
         .unwrap();
     data.extend(client.peek(PeekArgs { addr: 0, size: 0 }).unwrap());
-    MyStatus8::new(data)
+    data.into()
 }
 
 pub fn read_horse(client: &SysBotClient) -> PK8 {
@@ -67,6 +67,26 @@ pub fn read_horse(client: &SysBotClient) -> PK8 {
         .peek(PeekArgs {
             addr: 0x450CAE28,
             size: pk8::STORED_SIZE,
+        })
+        .unwrap()
+        .into()
+}
+
+pub fn read_legend(client: &SysBotClient) -> PK8 {
+    client
+        .peek(PeekArgs {
+            addr: 0x886BC348,
+            size: pk8::STORED_SIZE,
+        })
+        .unwrap()
+        .into()
+}
+
+pub fn read_k_coordinates_block(client: &SysBotClient) -> KCoordinates {
+    client
+        .peek(PeekArgs {
+            addr: 0x4505B3C0,
+            size: 0x6010,
         })
         .unwrap()
         .into()

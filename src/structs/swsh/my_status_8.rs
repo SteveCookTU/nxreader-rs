@@ -95,3 +95,9 @@ impl MyStatus8 {
         u32::from_le_bytes((&data[..]).try_into().unwrap())
     }
 }
+
+impl From<Vec<u8>> for MyStatus8 {
+    fn from(data: Vec<u8>) -> Self {
+        Self { data }
+    }
+}
