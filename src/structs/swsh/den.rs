@@ -1,9 +1,12 @@
-use crate::structs::swsh::encounter_nest_8_archive_generated::structure;
 use crate::structs::swsh::encounter_nest_8_archive_generated::structure::{
     EncounterNest8, EncounterNest8Archive,
 };
 use crate::structs::swsh::nest_hole_distribution_encounter_8_archive_generated::structure::{
     root_as_nest_hole_distribution_encounter_8archive, NestHoleDistributionEncounter8,
+};
+use crate::structs::swsh::nest_hole_reward_8_archive_generated::structure::NestHoleReward8Archive;
+use crate::structs::swsh::{
+    encounter_nest_8_archive_generated, nest_hole_reward_8_archive_generated,
 };
 use lazy_static::lazy_static;
 use std::fs::File;
@@ -11,6 +14,8 @@ use std::io::Read;
 
 pub const DEN_COUNT: usize = 276;
 pub const LOCAL_TABLE_RAW: &[u8] = include_bytes!("resources/local_raid");
+pub const LOCAL_DROPS_RAW: &[u8] = include_bytes!("resources/local_drop");
+pub const LOCAL_BONUS_RAW: &[u8] = include_bytes!("resources/local_bonus");
 
 const EVENT_HASH: u64 = 1721953670860364124;
 const DEN_HASHES: [[u64; 2]; 276] = [
@@ -293,8 +298,21 @@ const DEN_HASHES: [[u64; 2]; 276] = [
 ];
 
 lazy_static! {
-    static ref LOCAL_TABLE: EncounterNest8Archive<'static> =
-        structure::root_as_encounter_nest_8archive(LOCAL_TABLE_RAW).expect("Invalid flatbuffer");
+    pub static ref LOCAL_TABLE: EncounterNest8Archive<'static> =
+        encounter_nest_8_archive_generated::structure::root_as_encounter_nest_8archive(
+            LOCAL_TABLE_RAW
+        )
+        .expect("Invalid flatbuffer");
+    pub static ref LOCAL_DROPS: NestHoleReward8Archive<'static> =
+        nest_hole_reward_8_archive_generated::structure::root_as_nest_hole_reward_8archive(
+            LOCAL_DROPS_RAW
+        )
+        .expect("Invalid flatbuffer");
+    pub static ref LOCAL_BONUS: NestHoleReward8Archive<'static> =
+        nest_hole_reward_8_archive_generated::structure::root_as_nest_hole_reward_8archive(
+            LOCAL_BONUS_RAW
+        )
+        .expect("Invalid flatbuffer");
 }
 
 pub const DEN_SIZE: usize = 0x18;

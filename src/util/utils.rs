@@ -22,16 +22,17 @@ lazy_static! {
     pub static ref FORMS: Vec<String> = {
         let forms_u16 = FORMS_RAW
             .chunks(2)
+            .skip(1)
             .map(|chunk| {
                 if chunk.len() == 2 {
-                    ((chunk[0] as u16) << 2) + (chunk[1] as u16)
+                    u16::from_le_bytes(chunk.try_into().unwrap())
                 } else {
                     chunk[0] as u16
                 }
             })
             .collect::<Vec<u16>>();
         String::from_utf16_lossy(&forms_u16)
-            .split('\n')
+            .split("\r\n")
             .map(|s| s.to_string())
             .collect::<Vec<String>>()
     };

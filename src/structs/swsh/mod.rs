@@ -1,8 +1,10 @@
 mod den;
-mod encounter_nest_8_archive_generated;
+pub mod encounter_nest_8_archive_generated;
 mod kcoordinates;
 mod my_status_8;
-mod nest_hole_distribution_encounter_8_archive_generated;
+pub mod nest_hole_distribution_encounter_8_archive_generated;
+pub mod nest_hole_distribution_reward_8_archive_generated;
+pub mod nest_hole_reward_8_archive_generated;
 mod personal_table;
 mod storage_box;
 pub mod swsh_reader;

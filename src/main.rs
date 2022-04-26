@@ -18,6 +18,12 @@ enum Command {
     CheckSave,
     CheckWild,
     Dumper,
+    DumpHtmlTable {
+        #[clap(long)]
+        large_images: bool,
+        #[clap(short, long)]
+        island: Option<u8>,
+    },
 }
 
 #[derive(Copy, Clone, ArgEnum)]
@@ -71,6 +77,19 @@ fn main() {
             },
             Command::Dumper => match &args.game {
                 Game::Swsh => swsh::dumper(client),
+            },
+            Command::DumpHtmlTable {
+                large_images,
+                island,
+            } => match &args.game {
+                Game::Swsh => swsh::dump_html_table(
+                    *large_images,
+                    if let Some(island) = island {
+                        *island
+                    } else {
+                        0
+                    },
+                ),
             },
         }
     }
