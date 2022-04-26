@@ -89,10 +89,14 @@ pub fn read_k_coordinates_block(client: &SysBotClient) -> KCoordinates {
 }
 
 pub fn read_party(client: &SysBotClient) -> Vec<PK8> {
-    let data = client.peek(PeekArgs {
-        addr: 0x450C68B0,
-        size: 6 * PARTY_SIZE
-    }).unwrap();
+    let data = client
+        .peek(PeekArgs {
+            addr: 0x450C68B0,
+            size: 6 * PARTY_SIZE,
+        })
+        .unwrap();
 
-    data.chunks_exact(PARTY_SIZE).map(|chunk| PK8::from(chunk.to_vec())).collect::<Vec<PK8>>()
+    data.chunks_exact(PARTY_SIZE)
+        .map(|chunk| PK8::from(chunk.to_vec()))
+        .collect::<Vec<PK8>>()
 }

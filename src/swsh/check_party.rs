@@ -1,5 +1,5 @@
-use sysbot_rs::SysBotClient;
 use crate::structs::swsh::swsh_reader::read_party;
+use sysbot_rs::SysBotClient;
 
 pub fn check_party(client: SysBotClient) {
     let pkms = read_party(&client);
